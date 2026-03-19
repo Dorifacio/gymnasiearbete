@@ -13,6 +13,9 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import java.io.File;
 
+/**
+ * Tester
+ */
 public class GameTest implements KeyListener{
 	boolean gameRunning = true;
 	
