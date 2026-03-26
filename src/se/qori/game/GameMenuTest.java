@@ -156,7 +156,7 @@ public class GameMenuTest implements KeyListener{
 
 	public void update(long delta){	
 
-		//Meny sudas bort
+		//Meny suddas bort
 		if (meny == 0) {
 			renderList.remove(titel);
 			renderList.remove(playButton);
