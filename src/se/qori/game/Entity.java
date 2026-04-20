@@ -16,8 +16,7 @@ public class Entity implements Drawable{
 		this.x = x;
 		this.y = y;
 		this.img = img;
-		rec = new Rectangle((int)x, (int)y, img.getWidth(null), 
-		           img.getHeight(null));
+		rec = new Rectangle((int)x, (int)y/*, img.getWidth(null), img.getHeight(null)*/);
 	}
 	
 	public Rectangle getRectangle(){

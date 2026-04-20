@@ -9,6 +9,9 @@ import java.awt.event.KeyListener;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.ImageIcon;
 import java.io.File;
 
@@ -20,7 +23,7 @@ public class GameMenuTest implements KeyListener{
 	private TileMap map;
 
 	//players
-	private ArrayList<Drawable> renderList = new ArrayList<Drawable>();
+	private volatile ArrayList<Drawable> renderList = new ArrayList<Drawable>();
 
 
 
@@ -39,10 +42,12 @@ public class GameMenuTest implements KeyListener{
 
 	//Menu keys
 	private int meny = 1;
+	private int knappMeny = 0;
 	//Menu keys
 
 	//credits screen
 	private Entity credits;
+	private Entity xKnapp;
 	//credits screen
 
 	//map
@@ -97,7 +102,15 @@ public class GameMenuTest implements KeyListener{
 		keyDown.put("d", false);
 		keyDown.put("w", false);
 		keyDown.put("s", false);
-
+		
+		
+		//Meny
+		keyDown.put("1", false);
+		keyDown.put("2", false);
+		keyDown.put("enter", false);
+		keyDown.put("x", false);		
+		
+		//loop
 		gameLoop();
 	}
 	public void gravity() {
@@ -108,8 +121,8 @@ public class GameMenuTest implements KeyListener{
 	public void loadImages(){
 		//players
 
-		Image playerImg = new ImageIcon(getClass().getResource("/Katto.png")).getImage();		
-		player = new Entity(playerImg, 300, 45);
+		Image playerImg = new ImageIcon(getClass().getResource("/pxTest4(24x24).png")).getImage();		
+		player = new Entity(playerImg, 30, 45);
 
 		Image player2Img = new ImageIcon(getClass().getResource("/playerImg.png")).getImage();		
 		playero = new Entity(player2Img, 10, 10);
@@ -147,6 +160,10 @@ public class GameMenuTest implements KeyListener{
 		Image Creditscreen = new ImageIcon(getClass().getResource("/Creditsscreen.png")).getImage();		
 		credits = new Entity(Creditscreen, 0, 0);
 		renderList.add(credits);	
+		
+		Image xButton = new ImageIcon(getClass().getResource("/xButton.png")).getImage();		
+		xKnapp = new Entity(xButton, 1710, 800);
+		renderList.add(xKnapp);	
 		//credits
 
 
@@ -155,22 +172,71 @@ public class GameMenuTest implements KeyListener{
 	}
 
 	public void update(long delta){	
-
-		//Meny suddas bort
+		renderList.clear();
+		//Credits
 		if (meny == 0) {
-			renderList.remove(titel);
-			renderList.remove(playButton);
-			renderList.remove(playButtonB);
-			renderList.remove(creditsButton);
-			renderList.remove(creditsButtonB);
+
+			renderList.add(credits);
+			renderList.add(xKnapp);
+
 		}
 		
-		//Player sudas bort
+		//Meny
 		if (meny == 1) {
-			renderList.remove(player);
-			renderList.remove(playero);
-			renderList.remove(credits);
+			renderList.add(titel);
+			renderList.add(playButton);
+			renderList.add(creditsButton);
+
 		}
+		
+		//Play
+		if (meny == 2) {
+			renderList.add(player);
+			renderList.add(playero);
+		}
+		
+		//meny knappar
+		if (keyDown.get("1")) {
+			knappMeny = 1;
+		}
+		
+		if (knappMeny == 1) {
+			renderList.add(playButtonB);
+			renderList.add(playButton);			
+		}
+		
+		if (keyDown.get("2")) {
+			knappMeny = 2;
+		}
+		
+		if (knappMeny == 2) {
+			renderList.add(creditsButtonB);
+			renderList.add(creditsButton);	
+		}
+		
+		//meny pressed credits
+		if (keyDown.get("enter") && knappMeny == 2) {	
+			knappMeny = 0;
+			meny = 0;
+		}
+		
+		//meny pressed play
+		if (keyDown.get("enter") && knappMeny == 1) {	
+			knappMeny = 0;
+			meny = 2;
+			map = new TileMap("EpicMap4.txt", 32, tiles);
+			gameScreen.setBackground(map);
+
+		}
+		
+		//xKnapp pressed
+		if (keyDown.get("x")) {	
+			renderList.remove(credits);
+			knappMeny = 0;
+			meny = 1;
+		}
+		
+		
 
 		//Player1
 		int nx = (int)player.getX();
@@ -277,13 +343,13 @@ public class GameMenuTest implements KeyListener{
 			playero.setY(my);
 		}
 
-		if(player.getX() >= 300) {
+		/*if(player.getX() >= 300) {
 			camX = (int)player.getX() - 300;
 		}
 		if(camX > 416){
 			camX = 416;
 		}
-		gameScreen.cameraMoveTo(camX, 0);
+		gameScreen.cameraMoveTo(camX, 0);*/
 	}
 
 	public void render(){
@@ -366,6 +432,12 @@ public class GameMenuTest implements KeyListener{
 		if (e.getKeyCode() == KeyEvent.VK_2) {
 			keyDown.put("2", true);
 		}
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			keyDown.put("enter", true);
+		}
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			keyDown.put("x", true);
+		}
 
 	}
 
@@ -405,6 +477,13 @@ public class GameMenuTest implements KeyListener{
 		if (e.getKeyCode() == KeyEvent.VK_2) {
 			keyDown.put("2", false);
 		}
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			keyDown.put("enter", false);
+		}
+		if (e.getKeyCode() == KeyEvent.VK_X) {
+			keyDown.put("x", false);
+		}
+		
 	}
 
 	public static void main(String[] args) {
