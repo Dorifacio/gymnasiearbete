@@ -1,5 +1,6 @@
 package se.qori.game;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -12,11 +13,11 @@ public class Entity implements Drawable{
 	private Image img;
 	private Rectangle rec = null;
 	
-	public Entity(Image img, int x, int y) {
+	public Entity(Image img, int x, int y, int height, int width) {
 		this.x = x;
 		this.y = y;
 		this.img = img;
-		rec = new Rectangle((int)x, (int)y/*, img.getWidth(null), img.getHeight(null)*/);
+		rec = new Rectangle((int)height, (int)width/*, img.getWidth(null), img.getHeight(null)*/);
 	}
 	
 	public Rectangle getRectangle(){
@@ -45,8 +46,15 @@ public class Entity implements Drawable{
 		this.y = y;
 	}
 	
+	public void restartpos(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+	
 	@Override
 	public void draw(Graphics2D g) {
+		g.fill(rec);
+		g.setColor(Color.red);
 		g.drawImage(img, (int)x, (int)y, null);
 	}
 

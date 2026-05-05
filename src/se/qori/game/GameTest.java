@@ -91,10 +91,10 @@ public class GameTest implements KeyListener{
 	
 	public void loadImages(){
 		Image playerImg = new ImageIcon(getClass().getResource("/Katto.png")).getImage();		
-		player = new Entity(playerImg, 105, 105);
+		player = new Entity(playerImg, 105, 105, 10, 10);
 		
 		Image player2Img = new ImageIcon(getClass().getResource("/playerImg.png")).getImage();		
-		playero = new Entity(player2Img, 10, 10);
+		playero = new Entity(player2Img, 10, 10, 10, 10);
 		
 		renderList.add(player);
      	renderList.add(playero);
